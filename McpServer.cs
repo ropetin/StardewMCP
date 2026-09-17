@@ -21,7 +21,7 @@ public class McpServer
         _monitor = monitor;
         _port = config.Port;
         _bindAddress = config.BindAddress;
-        _tools = new ToolRegistry(config.OnlyAllowObserveTools);
+        _tools = new ToolRegistry(Helper, config.OnlyAllowObserveTools);
     }
 
     public void Start()

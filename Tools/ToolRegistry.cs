@@ -1,4 +1,5 @@
 using System.Text.Json.Nodes;
+using StardewModdingAPI;
 
 namespace StardewMCP.Tools;
 
@@ -8,8 +9,11 @@ public class ToolRegistry
 
     public bool OnlyObserve { get; }
 
-    public ToolRegistry(bool onlyObserve = false)
+    internal static IModHelper? Helper { get; private set; }
+
+    public ToolRegistry(IModHelper helper, bool onlyObserve = false)
     {
+        Helper = helper;
         OnlyObserve = onlyObserve;
         NpcTools.Register(this);
         PlayerTools.Register(this);
