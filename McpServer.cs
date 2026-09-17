@@ -56,7 +56,7 @@ public class McpServer
             }
         }
 
-        if (!_listener.IsStarted)
+        if (_listener.Prefixes.Count == 0)
         {
             throw new InvalidOperationException("Failed to start HTTP listener on any available address");
         }
