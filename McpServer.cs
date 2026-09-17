@@ -14,17 +14,19 @@ public class McpServer
     private CancellationTokenSource? _cts;
 
     private readonly int _port;
+    private readonly string _bindAddress;
 
     public McpServer(IMonitor monitor, ModConfig config)
     {
         _monitor = monitor;
         _port = config.Port;
+        _bindAddress = config.BindAddress;
         _tools = new ToolRegistry(config.OnlyAllowObserveTools);
     }
 
     public void Start()
     {
-        _listener.Prefixes.Add($"http://localhost:{_port}/");
+        _listener.Prefixes.Add($"http://{_bindAddress}:{_port}/");
         _listener.Start();
         _cts = new CancellationTokenSource();
         Task.Run(() => AcceptLoop(_cts.Token));
