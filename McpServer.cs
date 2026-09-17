@@ -26,14 +26,41 @@ public class McpServer
 
     public void Start()
     {
-        string prefix = _bindAddress switch
+        string[] prefixes;
+        if (_bindAddress == "+" || _bindAddress == "*")
         {
-            "+" => $"http://+:{_port}",
-            "*" => $"http://*:{_port}",
-            _ => $"http://{_bindAddress}:{_port}/"
-        };
-        _listener.Prefixes.Add(prefix);
-        _listener.Start();
+            prefixes = new[] { $"http://+:{_port}", $"http://0.0.0.0:{_port}", $"http://localhost:{_port}/" };
+        }
+        else if (_bindAddress == "0.0.0.0")
+        {
+            prefixes = new[] { $"http://0.0.0.0:{_port}", $"http://localhost:{_port}/" };
+        }
+        else
+        {
+            prefixes = new[] { $"http://{_bindAddress}:{_port}/" };
+        }
+
+        foreach (var prefix in prefixes)
+        {
+            try
+            {
+                _listener.Prefixes.Add(prefix);
+                _listener.Start();
+                _monitor.Log($"HTTP listener started on {prefix}", LogLevel.Debug);
+                break;
+            }
+            catch (HttpListenerException ex)
+            {
+                _monitor.Log($"Failed to bind to {prefix}: {ex.Message}", LogLevel.Warn);
+                continue;
+            }
+        }
+
+        if (!_listener.IsStarted)
+        {
+            throw new InvalidOperationException("Failed to start HTTP listener on any available address");
+        }
+
         _cts = new CancellationTokenSource();
         Task.Run(() => AcceptLoop(_cts.Token));
     }
