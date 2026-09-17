@@ -29,11 +29,21 @@ public class McpServer
         string[] prefixes;
         if (_bindAddress == "+" || _bindAddress == "*")
         {
-            prefixes = new[] { $"http://+:{_port}", $"http://0.0.0.0:{_port}", $"http://localhost:{_port}/" };
+            prefixes = new[] { 
+                $"http://*:{_port}/", 
+                $"http://+:{_port}/", 
+                $"http://0.0.0.0:{_port}/",
+                $"http://127.0.0.1:{_port}/",
+                $"http://localhost:{_port}/" 
+            };
         }
         else if (_bindAddress == "0.0.0.0")
         {
-            prefixes = new[] { $"http://0.0.0.0:{_port}", $"http://localhost:{_port}/" };
+            prefixes = new[] { 
+                $"http://0.0.0.0:{_port}/",
+                $"http://127.0.0.1:{_port}/",
+                $"http://localhost:{_port}/" 
+            };
         }
         else
         {
@@ -46,12 +56,13 @@ public class McpServer
             {
                 _listener.Prefixes.Add(prefix);
                 _listener.Start();
-                _monitor.Log($"HTTP listener started on {prefix}", LogLevel.Debug);
+                _monitor.Log($"HTTP listener started on {prefix}", LogLevel.Info);
                 break;
             }
             catch (HttpListenerException ex)
             {
-                _monitor.Log($"Failed to bind to {prefix}: {ex.Message}", LogLevel.Warn);
+                _monitor.Log($"Failed to bind to {prefix}: {ex.Message} (error code: {ex.ErrorCode})", LogLevel.Warn);
+                _listener.Prefixes.Remove(prefix);
                 continue;
             }
         }
