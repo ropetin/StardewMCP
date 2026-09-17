@@ -28,7 +28,7 @@ public class McpServer
     {
         string prefix = _bindAddress switch
         {
-            "+" => $"http://+:{_port}/",
+            "+" => $"http://+:{_port}",
             _ => $"http://{_bindAddress}:{_port}/"
         };
         _listener.Prefixes.Add(prefix);
