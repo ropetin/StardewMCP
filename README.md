@@ -16,7 +16,7 @@ Because MCP is an open protocol, StardewMCP is not just for chatting with an AI 
 
 ## Network Access
 
-By default, the mod serves on `127.0.0.1` (localhost only). To make it accessible on your local network, edit `config.json` and try one of these options:
+By default, the mod serves on `localhost` (localhost only). To make it accessible on your local network, edit `config.json` and try one of these options:
 
 **Option 1: Bind to all interfaces (may require admin)**
 ```json
@@ -56,7 +56,7 @@ This mod can be safely added to or removed from an existing save at any time.
 1. Install SMAPI if you haven't already.
 2. Download the latest release and extract the `StardewMCP` folder into your `Mods` directory.
 3. Launch the game through SMAPI. The mod starts an HTTP server automatically:
-   - Default: `http://127.0.0.1:24842` (localhost only)
+   - Default: `http://localhost:24842` (localhost only)
    - Network: Set `"bindAddress": "0.0.0.0"` or a specific IP like `"192.168.1.100"` in `config.json`, then allow port 24842 in Windows Firewall (see Network Access section for details)
 4. Add the server to your MCP client config (e.g. Claude Desktop's `claude_desktop_config.json`):
 
