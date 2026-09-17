@@ -26,7 +26,12 @@ public class McpServer
 
     public void Start()
     {
-        _listener.Prefixes.Add($"http://{_bindAddress}:{_port}/");
+        string prefix = _bindAddress switch
+        {
+            "+" => $"http://+:{_port}/",
+            _ => $"http://{_bindAddress}:{_port}/"
+        };
+        _listener.Prefixes.Add(prefix);
         _listener.Start();
         _cts = new CancellationTokenSource();
         Task.Run(() => AcceptLoop(_cts.Token));

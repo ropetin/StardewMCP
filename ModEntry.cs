@@ -23,7 +23,7 @@ public class ModEntry : Mod
         _server = new McpServer(Monitor, config);
         _server.Start();
         Monitor.Log($"StardewMCP listening on http://{config.BindAddress}:{config.Port}", LogLevel.Info);
-        Monitor.Log($"Add to your MCP client config: {{ \"stardew\": {{ \"url\": \"http://{config.BindAddress}:{config.Port}\" }} }}", LogLevel.Info);
+        Monitor.Log($"Add to your MCP client config: {{ \"stardew\": {{ \"url\": \"http://localhost:{config.Port}\" }} }}", LogLevel.Info);
     }
 
     private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)

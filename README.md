@@ -26,6 +26,14 @@ By default, the mod serves only on `localhost`. To make it accessible on your lo
 
 Then configure Windows Firewall to allow incoming connections on port 24842.
 
+**Note:** Binding to `*` may require elevated privileges. If you get "Access is denied" error, run this command once as Administrator in an elevated Command Prompt:
+
+```cmd
+netsh http add urlacl url=http://*:24842/ user=YOUR_USERNAME
+```
+
+Replace `YOUR_USERNAME` with your Windows username. You can find it by running `echo %USERNAME%` in Command Prompt.
+
 Find your computer's local IP (e.g., `192.168.1.100`) with `ipconfig` on Windows, and use `http://YOUR_IP:24842` in your MCP client config.
 
 ---
@@ -45,14 +53,14 @@ This mod can be safely added to or removed from an existing save at any time.
 2. Download the latest release and extract the `StardewMCP` folder into your `Mods` directory.
 3. Launch the game through SMAPI. The mod starts an HTTP server automatically:
    - Default: `http://localhost:24842` (localhost only)
-   - Network: Set `"bindAddress": "*"` in `config.json`, then allow port 24842 in Windows Firewall
+   - Network: Set `"bindAddress": "*"` in `config.json`, then allow port 24842 in Windows Firewall (may require `netsh` command - see Network Access section)
 4. Add the server to your MCP client config (e.g. Claude Desktop's `claude_desktop_config.json`):
 
 ```json
 {
   "mcpServers": {
     "stardew": {
-      "url": "http://YOUR_COMPUTER_IP:24842"
+      "url": "http://192.168.1.100:24842"
     }
   }
 }
