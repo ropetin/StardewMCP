@@ -97,6 +97,10 @@ This mod can be safely added to or removed from an existing save at any time.
 | `send_hud_message` | Show a notification in the HUD |
 | `show_speech_bubble` | Show a speech bubble above an NPC or monster |
 | `teleport_player` | Warp to any location, optionally at specific coordinates |
+| `move_up` | Move up one tile (respects collision) |
+| `move_down` | Move down one tile (respects collision) |
+| `move_left` | Move left one tile (respects collision) |
+| `move_right` | Move right one tile (respects collision) |
 
 ### World & Time
 

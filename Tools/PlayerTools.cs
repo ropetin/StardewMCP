@@ -41,6 +41,34 @@ public static class PlayerTools
         );
 
         registry.Add(
+            Tool("move_up",
+                "Move the player up one tile. Collision will stop movement into walls and obstacles.",
+                Props()),
+            MoveUp
+        );
+
+        registry.Add(
+            Tool("move_down",
+                "Move the player down one tile. Collision will stop movement into walls and obstacles.",
+                Props()),
+            MoveDown
+        );
+
+        registry.Add(
+            Tool("move_left",
+                "Move the player left one tile. Collision will stop movement into walls and obstacles.",
+                Props()),
+            MoveLeft
+        );
+
+        registry.Add(
+            Tool("move_right",
+                "Move the player right one tile. Collision will stop movement into walls and obstacles.",
+                Props()),
+            MoveRight
+        );
+
+        registry.Add(
             Tool("send_hud_message",
                 "Display a message in the player's HUD (the small notification that appears in-game).",
                 Props(Str("message", "The message text to display"))),
@@ -180,6 +208,54 @@ public static class PlayerTools
                 Props()),
             ToggleInvincible
         );
+    }
+
+    private static Task<string> MoveUp(JsonObject args)
+    {
+        return ModEntry.OnGameThread(() =>
+        {
+            if (!Context.IsWorldReady)
+                return "No game is loaded.";
+
+            Helper.Input.PerformActionInput(InputAction.Up);
+            return "Moved up.";
+        });
+    }
+
+    private static Task<string> MoveDown(JsonObject args)
+    {
+        return ModEntry.OnGameThread(() =>
+        {
+            if (!Context.IsWorldReady)
+                return "No game is loaded.";
+
+            Helper.Input.PerformActionInput(InputAction.Down);
+            return "Moved down.";
+        });
+    }
+
+    private static Task<string> MoveLeft(JsonObject args)
+    {
+        return ModEntry.OnGameThread(() =>
+        {
+            if (!Context.IsWorldReady)
+                return "No game is loaded.";
+
+            Helper.Input.PerformActionInput(InputAction.Left);
+            return "Moved left.";
+        });
+    }
+
+    private static Task<string> MoveRight(JsonObject args)
+    {
+        return ModEntry.OnGameThread(() =>
+        {
+            if (!Context.IsWorldReady)
+                return "No game is loaded.";
+
+            Helper.Input.PerformActionInput(InputAction.Right);
+            return "Moved right.";
+        });
     }
 
     // ── Handlers ────────────────────────────────────────────────────────────
