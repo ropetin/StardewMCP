@@ -217,7 +217,7 @@ public static class PlayerTools
             if (!Context.IsWorldReady)
                 return "No game is loaded.";
 
-            Helper.Input.PerformActionInput(InputAction.Up);
+            Helper.Input.Press(SButton.DPadUp);
             return "Moved up.";
         });
     }
@@ -229,7 +229,7 @@ public static class PlayerTools
             if (!Context.IsWorldReady)
                 return "No game is loaded.";
 
-            Helper.Input.PerformActionInput(InputAction.Down);
+            Helper.Input.Press(SButton.DPadDown);
             return "Moved down.";
         });
     }
@@ -241,7 +241,7 @@ public static class PlayerTools
             if (!Context.IsWorldReady)
                 return "No game is loaded.";
 
-            Helper.Input.PerformActionInput(InputAction.Left);
+            Helper.Input.Press(SButton.DPadLeft);
             return "Moved left.";
         });
     }
@@ -253,7 +253,7 @@ public static class PlayerTools
             if (!Context.IsWorldReady)
                 return "No game is loaded.";
 
-            Helper.Input.PerformActionInput(InputAction.Right);
+            Helper.Input.Press(SButton.DPadRight);
             return "Moved right.";
         });
     }
