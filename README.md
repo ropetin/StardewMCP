@@ -1,6 +1,6 @@
 # StardewMCP
 
-<img src="StardewMCP.png" alt="StardewMCP" style="max-height: 500px;" />
+<img src="StardewMCP-wide.png" alt="StardewMCP" style="max-height: 500px;" />
 
 A SMAPI mod that runs a local MCP (Model Context Protocol) server inside Stardew Valley, letting AI assistants like Claude interact with your live game. Ask Claude to check what crops need watering, teleport you somewhere, give you items, or just describe what's around you.
 
@@ -8,7 +8,37 @@ Because MCP is an open protocol, StardewMCP is not just for chatting with an AI 
 
 > **Safety:** By default all tools are active, including ones that modify your game. These are as powerful as any cheat or debug tool and can break things if misused. If you only want the AI to observe your game without making any changes, set `OnlyAllowObserveTools: true` in `config.json` — this restricts the mod to read-only tools only.
 
+> **Network security:** When exposed to the network (by setting `bindAddress` to `*`), anyone on your local network can control your game. Only enable this on trusted networks.
+
 > **A note on quality:** This mod was built by an experienced software engineer primarily to explore AI code assistant capabilities and the MCP server protocol — not as a serious C# or modding project. It is only my second Stardew mod and C# is not my home turf. The code was written with significant AI assistance as part of that experiment. Bugs are likely, but the mod should generally work.
+
+---
+
+## Network Access
+
+By default, the mod serves on `localhost` (localhost only). To make it accessible on your local network, edit `config.json` and try one of these options:
+
+**Option 1: Bind to all interfaces (may require admin)**
+```json
+{
+  "bindAddress": "0.0.0.0"
+}
+```
+
+If you get "Access is denied" error, you need to reserve the port. Run this command once as Administrator in an elevated Command Prompt:
+```cmd
+netsh http add urlacl url=http://0.0.0.0:24842/ user=Everyone
+```
+
+**Option 2: Bind to a specific network interface**
+Find your computer's local IP (e.g., `192.168.1.100`) with `ipconfig` on Windows, then set:
+```json
+{
+  "bindAddress": "192.168.1.100"
+}
+```
+
+Then configure Windows Firewall to allow incoming connections on port 24842 and use `http://YOUR_IP:24842` in your MCP client config.
 
 ---
 
@@ -25,14 +55,16 @@ This mod can be safely added to or removed from an existing save at any time.
 
 1. Install SMAPI if you haven't already.
 2. Download the latest release and extract the `StardewMCP` folder into your `Mods` directory.
-3. Launch the game through SMAPI. The mod starts an HTTP server on `http://localhost:24842` automatically.
+3. Launch the game through SMAPI. The mod starts an HTTP server automatically:
+   - Default: `http://localhost:24842` (localhost only)
+   - Network: Set `"bindAddress": "0.0.0.0"` or a specific IP like `"192.168.1.100"` in `config.json`, then allow port 24842 in Windows Firewall (see Network Access section for details)
 4. Add the server to your MCP client config (e.g. Claude Desktop's `claude_desktop_config.json`):
 
 ```json
 {
   "mcpServers": {
     "stardew": {
-      "url": "http://localhost:24842"
+      "url": "http://192.168.1.100:24842"
     }
   }
 }
