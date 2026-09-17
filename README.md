@@ -16,25 +16,29 @@ Because MCP is an open protocol, StardewMCP is not just for chatting with an AI 
 
 ## Network Access
 
-By default, the mod serves only on `localhost`. To make it accessible on your local network, edit `config.json` and set:
+By default, the mod serves on `127.0.0.1` (localhost only). To make it accessible on your local network, edit `config.json` and try one of these options:
 
+**Option 1: Bind to all interfaces (may require admin)**
 ```json
 {
-  "bindAddress": "*"
+  "bindAddress": "0.0.0.0"
 }
 ```
 
-Then configure Windows Firewall to allow incoming connections on port 24842.
-
-**Note:** Binding to `*` may require elevated privileges. If you get "Access is denied" error, run this command once as Administrator in an elevated Command Prompt:
-
+If you get "Access is denied" error, you need to reserve the port. Run this command once as Administrator in an elevated Command Prompt:
 ```cmd
-netsh http add urlacl url=http://*:24842/ user=YOUR_USERNAME
+netsh http add urlacl url=http://0.0.0.0:24842/ user=Everyone
 ```
 
-Replace `YOUR_USERNAME` with your Windows username. You can find it by running `echo %USERNAME%` in Command Prompt.
+**Option 2: Bind to a specific network interface**
+Find your computer's local IP (e.g., `192.168.1.100`) with `ipconfig` on Windows, then set:
+```json
+{
+  "bindAddress": "192.168.1.100"
+}
+```
 
-Find your computer's local IP (e.g., `192.168.1.100`) with `ipconfig` on Windows, and use `http://YOUR_IP:24842` in your MCP client config.
+Then configure Windows Firewall to allow incoming connections on port 24842 and use `http://YOUR_IP:24842` in your MCP client config.
 
 ---
 
@@ -52,8 +56,8 @@ This mod can be safely added to or removed from an existing save at any time.
 1. Install SMAPI if you haven't already.
 2. Download the latest release and extract the `StardewMCP` folder into your `Mods` directory.
 3. Launch the game through SMAPI. The mod starts an HTTP server automatically:
-   - Default: `http://localhost:24842` (localhost only)
-   - Network: Set `"bindAddress": "*"` in `config.json`, then allow port 24842 in Windows Firewall (may require `netsh` command - see Network Access section)
+   - Default: `http://127.0.0.1:24842` (localhost only)
+   - Network: Set `"bindAddress": "0.0.0.0"` or a specific IP like `"192.168.1.100"` in `config.json`, then allow port 24842 in Windows Firewall (see Network Access section for details)
 4. Add the server to your MCP client config (e.g. Claude Desktop's `claude_desktop_config.json`):
 
 ```json
